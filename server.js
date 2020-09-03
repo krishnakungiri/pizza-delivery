@@ -12,8 +12,8 @@ const MongoDbStore = require('connect-mongo')(session)
 const passport = require('passport')
 
 // Database connection
-const url = 'mongodb://localhost/pizza';
-mongoose.connect(url, { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
+const url = 'mongodb+srv://krishna:krishna@cluster0.ydorp.gcp.mongodb.net/pizza';
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('Database connected...');
@@ -23,15 +23,15 @@ connection.once('open', () => {
 
 // Session store 
 let mongoStore = new MongoDbStore({
-                mongooseConnection: connection,
-                collection: 'sessions'
-            })
+    mongooseConnection: connection,
+    collection: 'sessions'
+})
 // Session config
 app.use(session({
     secret: process.env.COOKIE_SECRET,
-    resave: false, 
+    resave: false,
     store: mongoStore,
-    saveUninitialized: false, 
+    saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24 hour 
 }))
 
@@ -60,6 +60,6 @@ app.set('view engine', 'ejs')
 
 require('./routes/web')(app)
 
-app.listen(PORT , () => {
+app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)
 })
